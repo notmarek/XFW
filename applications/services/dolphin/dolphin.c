@@ -22,6 +22,13 @@ void dolphin_deed(Dolphin* dolphin, DolphinDeed deed) {
     dolphin_event_send_async(dolphin, &event);
 }
 
+void dolphin_change_level(Dolphin* dolphin, int desired_level) {
+    DolphinEvent event;
+    event.type = DolphinEventChangeLevel;
+    event.desired_level = desired_level;
+    dolphin_event_send_async(dolphin, &event);
+}
+
 DolphinDeed getRandomDeed() {
     DolphinDeed returnGrp[14] = {1, 5, 8, 10, 12, 15, 17, 20, 21, 25, 26, 28, 29, 32};
     static bool rand_generator_inited = false;
@@ -202,6 +209,10 @@ int32_t dolphin_srv(void* p) {
             } else if(event.type == DolphinEventTypeIncreaseButthurt) {
                 FURI_LOG_I(TAG, "Increase butthurt");
                 dolphin_state_butthurted(dolphin->state);
+                dolphin_state_save(dolphin->state);
+            } else if (event.type == DolphinEventChangeLevel) {
+                FURI_LOG_I(TAG, "Change level");
+                dolphin_state_set_level(dolphin->state, event.desired_level);
                 dolphin_state_save(dolphin->state);
             }
             dolphin_event_release(dolphin, &event);

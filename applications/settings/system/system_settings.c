@@ -2,6 +2,7 @@
 #include <loader/loader.h>
 #include <lib/toolbox/value_index.h>
 #include <locale/locale.h>
+#include <dolphin/dolphin.h>
 
 const char* const log_level_text[] = {
     "Default",
@@ -34,6 +35,47 @@ const char* const debug_text[] = {
     "OFF",
     "ON",
 };
+
+const char* const level_text[30] = {
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+};
+
+
+static void dolphin_changed(VariableItem* item) {
+    uint8_t index = variable_item_get_current_value_index(item);
+    variable_item_set_current_value_text(item, level_text[index]);
+    DOLPHIN_SET_LEVEL(index + 1);
+    loader_update_menu();
+}
 
 static void debug_changed(VariableItem* item) {
     uint8_t index = variable_item_get_current_value_index(item);
@@ -182,6 +224,16 @@ SystemSettings* system_settings_alloc() {
     value_index = furi_hal_rtc_is_flag_set(FuriHalRtcFlagDebug) ? 1 : 0;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, debug_text[value_index]);
+
+
+    item = variable_item_list_add(
+        app->var_item_list, "Dolphin LVL", COUNT_OF(level_text), dolphin_changed, app);
+    Dolphin* dolphin = furi_record_open(RECORD_DOLPHIN);
+    DolphinStats stats = dolphin_stats(dolphin);
+    furi_record_close(RECORD_DOLPHIN);
+    value_index = stats.level -1;
+    variable_item_set_current_value_index(item, value_index);
+    variable_item_set_current_value_text(item, level_text[value_index]);
 
     item = variable_item_list_add(
         app->var_item_list,

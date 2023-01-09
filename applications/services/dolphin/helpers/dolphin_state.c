@@ -90,6 +90,16 @@ bool dolphin_state_is_levelup(int icounter) {
     return false;
 }
 
+void dolphin_state_set_level(DolphinState* dolphin_state, int desired_level) {
+    if (desired_level < 1) {
+        desired_level = 1;
+    } else if (desired_level > 30) {
+        desired_level = 30;
+    }
+    dolphin_state->data.icounter = level_array[desired_level - 1];
+    dolphin_state->dirty = true;
+}
+
 uint8_t dolphin_get_level(int icounter) {
 for (int i = 0; i < 29; ++i) {
     if (icounter <= level_array[i]) {

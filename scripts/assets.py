@@ -23,7 +23,6 @@ ICONS_TEMPLATE_C_FRAME = "const uint8_t {name}[] = {data};\n"
 ICONS_TEMPLATE_C_DATA = "const uint8_t* const {name}[] = {data};\n"
 ICONS_TEMPLATE_C_ICONS = "const Icon {name} = {{.width={width},.height={height},.frame_count={frame_count},.frame_rate={frame_rate},.frames=_{name}}};\n"
 
-
 class Main(App):
     def init(self):
         # command args
@@ -245,6 +244,7 @@ class Main(App):
             new_manifest.save(manifest_file)
         else:
             self.logger.info("Manifest is up-to-date!")
+
 
         self.logger.info(f"Complete")
 

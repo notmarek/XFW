@@ -13,6 +13,7 @@ typedef enum {
     DolphinEventTypeFlush,
     DolphinEventTypeIncreaseButthurt,
     DolphinEventTypeClearLimits,
+    DolphinEventChangeLevel,
 } DolphinEventType;
 
 typedef struct {
@@ -21,6 +22,7 @@ typedef struct {
     union {
         DolphinDeed deed;
         DolphinStats* stats;
+        int desired_level;
     };
 } DolphinEvent;
 
