@@ -25,7 +25,7 @@ static const Version version = {
 #else
     .custom_flipper_name = NULL,
 #endif
-    .version = VERSION
+    .version = "NFW_001"
 #ifdef FURI_RAM_EXEC
     " (RAM)"
 #endif
