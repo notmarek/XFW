@@ -22,9 +22,10 @@ typedef struct RawSamplesBuffer {
     uint32_t short_pulse_dur; /* Duration of the shortest pulse. */
 } RawSamplesBuffer;
 
-RawSamplesBuffer* raw_samples_alloc(void);
-void raw_samples_reset(RawSamplesBuffer* s);
-void raw_samples_add(RawSamplesBuffer* s, bool level, uint32_t dur);
-void raw_samples_get(RawSamplesBuffer* s, uint32_t idx, bool* level, uint32_t* dur);
-void raw_samples_copy(RawSamplesBuffer* dst, RawSamplesBuffer* src);
-void raw_samples_free(RawSamplesBuffer* s);
+RawSamplesBuffer *raw_samples_alloc(void);
+void raw_samples_reset(RawSamplesBuffer *s);
+void raw_samples_center(RawSamplesBuffer *s, uint32_t offset);
+void raw_samples_add(RawSamplesBuffer *s, bool level, uint32_t dur);
+void raw_samples_get(RawSamplesBuffer *s, uint32_t idx, bool *level, uint32_t *dur);
+void raw_samples_copy(RawSamplesBuffer *dst, RawSamplesBuffer *src);
+void raw_samples_free(RawSamplesBuffer *s);
