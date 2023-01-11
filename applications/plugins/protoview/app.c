@@ -253,7 +253,7 @@ int32_t protoview_app_entry(void* p) {
                 case ViewDirectSampling:
                     process_input_direct_sampling(app,input);
                     break;
-                case ViewLast: furi_crash(TAG " ViewLast selected"); break;
+                // case ViewLast: furi_crash(TAG " ViewLast selected"); break;
                 }
             }
         } else {

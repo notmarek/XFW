@@ -50,19 +50,8 @@ static void dolphin_changed(VariableItem* item) {
     uint8_t index = variable_item_get_current_value_index(item);
     variable_item_set_current_value_text(item, level_text[index]);
     desired_level = index + 1;
-    // DOLPHIN_SET_LEVEL(index + 1);
+    DOLPHIN_SET_LEVEL(index + 1);
     loader_update_menu();
-}
-
-static void set_dolphin_level(VariableItem* item) {
-    // item = 0;]   
-    // uint8_t index = variable_item_get_current_value_index(item);
-    // variable_item_set_current_value_text(item, debug_text[index]);
-    variable_item_set_current_value_index(item, 0);
-
-    DOLPHIN_SET_LEVEL(desired_level);
-    loader_update_menu();
-
 }
 
 static void debug_changed(VariableItem* item) {
@@ -222,9 +211,6 @@ SystemSettings* system_settings_alloc() {
     value_index = stats.level - 1;
     variable_item_set_current_value_index(item, value_index);
     variable_item_set_current_value_text(item, level_text[value_index]);
-    item = variable_item_list_add(app->var_item_list, "Set LVL", 2, set_dolphin_level, app);
-    variable_item_set_current_value_index(item, 0);
-    variable_item_set_current_value_text(item, debug_text[0]);
 
     item = variable_item_list_add(
         app->var_item_list,
