@@ -32,11 +32,24 @@ typedef enum {
         furi_record_close("dolphin");                             \
     } while(0)
 
+#define DOLPHIN_SET_LEVEL(level)                                  \
+    do {                                                          \
+        Dolphin* dolphin = (Dolphin*)furi_record_open("dolphin"); \
+        dolphin_change_level(dolphin, level);                     \
+        furi_record_close("dolphin");                             \
+    } while(0)
+
 /** Deed complete notification. Call it on deed completion.
  * See dolphin_deed.h for available deeds. In futures it will become part of assets.
  * Thread safe, async
  */
 void dolphin_deed(Dolphin* dolphin, DolphinDeed deed);
+
+/** 
+ * change your dolphin's level
+*/
+
+void dolphin_change_level(Dolphin* dolphin, int desired_level);
 
 /** Retrieve dolphin stats
  * Thread safe, blocking

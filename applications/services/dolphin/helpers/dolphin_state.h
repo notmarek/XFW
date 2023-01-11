@@ -45,4 +45,6 @@ bool dolphin_state_is_levelup(int icounter);
 
 void dolphin_state_increase_level(DolphinState* dolphin_state);
 
+void dolphin_state_set_level(DolphinState* dolphin_state, int desired_level);
+
 uint8_t dolphin_get_level(int icounter);
