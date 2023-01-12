@@ -82,21 +82,38 @@ uint64_t dolphin_state_timestamp() {
 }
 
 bool dolphin_state_is_levelup(int icounter) {
-    for (int i = 0; i<30; ++i) {
-        if ((icounter == level_array[i])) {
+    for(int i = 0; i < 30; ++i) {
+        if((icounter == level_array[i])) {
             return true;
         }
     };
     return false;
 }
 
-uint8_t dolphin_get_level(int icounter) {
-for (int i = 0; i < 29; ++i) {
-    if (icounter <= level_array[i]) {
-        return i + 1;
+void dolphin_state_set_level(DolphinState* dolphin_state, int desired_level) {
+    FURI_LOG_I(TAG, "Setting level to %d", desired_level);
+    if(desired_level < 1) {
+    
+        desired_level = 1;
+    } else if(desired_level > 30) {
+        desired_level = 30;
     }
+    if (desired_level == 1) {
+        dolphin_state->data.icounter = 0;
+    } else {
+        dolphin_state->data.icounter = (uint32_t)level_array[desired_level - 2];
+    }
+    dolphin_state->data.timestamp = dolphin_state_timestamp();
+    dolphin_state_increase_level(dolphin_state);
 }
-return 30;
+
+uint8_t dolphin_get_level(int icounter) {
+    for(int i = 0; i < 29; ++i) {
+        if(icounter <= level_array[i]) {
+            return i + 1;
+        }
+    }
+    return 30;
 }
 
 uint32_t dolphin_state_xp_above_last_levelup(int icounter) {

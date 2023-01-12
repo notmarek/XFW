@@ -54,7 +54,7 @@ typedef enum {
 } SwitchViewDirection;
 
 typedef struct {
-    const char *name;
+    const char* name;
     FuriHalSubGhzPreset preset;
     uint8_t *custom;
 } ProtoViewModulation;
@@ -65,7 +65,7 @@ extern ProtoViewModulation ProtoViewModulations[]; /* In app_subghz.c */
  * It receives data and we get our protocol "feed" callback called
  * with the level (1 or 0) and duration. */
 struct ProtoViewTxRx {
-    SubGhzWorker* worker;       /* Our background worker. */
+    SubGhzWorker* worker; /* Our background worker. */
     SubGhzEnvironment* environment;
     SubGhzReceiver* receiver;
     TxRxState txrx_state; /* Receiving, idle or sleeping? */
@@ -90,15 +90,15 @@ typedef struct ProtoViewMsgInfo {
 
 struct ProtoViewApp {
     /* GUI */
-    Gui *gui;
-    ViewPort *view_port;     /* We just use a raw viewport and we render
+    Gui* gui;
+    ViewPort* view_port; /* We just use a raw viewport and we render
                                 everything into the low level canvas. */
-    ProtoViewCurrentView current_view;  /* Active view ID. */
-    FuriMessageQueue *event_queue;  /* Keypress events go here. */
+    ProtoViewCurrentView current_view; /* Active view ID. */
+    FuriMessageQueue* event_queue; /* Keypress events go here. */
 
     /* Radio related. */
-    ProtoViewTxRx *txrx;     /* Radio state. */
-    SubGhzSetting *setting;  /* A list of valid frequencies. */
+    ProtoViewTxRx* txrx; /* Radio state. */
+    SubGhzSetting* setting; /* A list of valid frequencies. */
 
     /* Generic app state. */
     int running;             /* Once false exists the app. */

@@ -20,11 +20,11 @@ class GitVersion:
         # We also dont try;exept an entire block of code. This is bad practise. We only try the single part that we expect to fail!
         # Furthermore, traceback.format_exc() is a thing. Fucking use it. JFC
 
-        for git_tuple in self.gitlist:
-            try:
-                exec(f"{git_tuple[0]} = {self._exec_git(git_tuple[1])}")
-            except:
-                exec(f'{git_tuple[0]} = "Unknown"')
+        # for git_tuple in self.gitlist:
+        #     try:
+        #         exec(f"{git_tuple[0]} = {self._exec_git(git_tuple[1])}")
+        #     except:
+        #         exec(f'{git_tuple[0]} = "Unknown"')
 
         dirty = False
         try:

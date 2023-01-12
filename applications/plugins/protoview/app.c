@@ -40,8 +40,8 @@ extern const SubGhzProtocolRegistry protoview_protocol_registry;
 /* The callback actually just passes the control to the actual active
  * view callback, after setting up basic stuff like cleaning the screen
  * and setting color to black. */
-static void render_callback(Canvas *const canvas, void *ctx) {
-    ProtoViewApp *app = ctx;
+static void render_callback(Canvas* const canvas, void* ctx) {
+    ProtoViewApp* app = ctx;
 
     /* Clear screen. */
     canvas_set_color(canvas, ColorWhite);
@@ -94,7 +94,7 @@ static void app_switch_view(ProtoViewApp *app, SwitchViewDirection dir) {
 /* Allocate the application state and initialize a number of stuff.
  * This is called in the entry point to create the application state. */
 ProtoViewApp* protoview_app_alloc() {
-    ProtoViewApp *app = malloc(sizeof(ProtoViewApp));
+    ProtoViewApp* app = malloc(sizeof(ProtoViewApp));
 
     // Init shared data structures
     RawSamples = raw_samples_alloc();
@@ -140,7 +140,7 @@ ProtoViewApp* protoview_app_alloc() {
     subghz_worker_set_pair_callback(
         app->txrx->worker, (SubGhzWorkerPairCallback)subghz_receiver_decode);
     subghz_worker_set_context(app->txrx->worker, app->txrx->receiver);
-    
+
     app->frequency = subghz_setting_get_default_frequency(app->setting);
     app->modulation = 0; /* Defaults to ProtoViewModulations[0]. */
 
@@ -153,7 +153,7 @@ ProtoViewApp* protoview_app_alloc() {
 /* Free what the application allocated. It is not clear to me if the
  * Flipper OS, once the application exits, will be able to reclaim space
  * even if we forget to free something here. */
-void protoview_app_free(ProtoViewApp *app) {
+void protoview_app_free(ProtoViewApp* app) {
     furi_assert(app);
 
     // Put CC1101 on sleep.
@@ -187,17 +187,17 @@ void protoview_app_free(ProtoViewApp *app) {
 /* Called periodically. Do signal processing here. Data we process here
  * will be later displayed by the render callback. The side effect of this
  * function is to scan for signals and set DetectedSamples. */
-static void timer_callback(void *ctx) {
-    ProtoViewApp *app = ctx;
+static void timer_callback(void* ctx) {
+    ProtoViewApp* app = ctx;
     scan_for_signal(app);
 }
 
 int32_t protoview_app_entry(void* p) {
     UNUSED(p);
-    ProtoViewApp *app = protoview_app_alloc();
+    ProtoViewApp* app = protoview_app_alloc();
 
     /* Create a timer. We do data analysis in the callback. */
-    FuriTimer *timer = furi_timer_alloc(timer_callback, FuriTimerTypePeriodic, app);
+    FuriTimer* timer = furi_timer_alloc(timer_callback, FuriTimerTypePeriodic, app);
     furi_timer_start(timer, furi_kernel_get_tick_frequency() / 4);
 
     /* Start listening to signals immediately. */
@@ -238,19 +238,22 @@ int32_t protoview_app_entry(void* p) {
                  * active view input processing. */
                 switch(app->current_view) {
                 case ViewRawPulses:
-                    process_input_raw_pulses(app,input);
+                    process_input_raw_pulses(app, input);
                     break;
                 case ViewInfo:
                     process_input_info(app,input);
                     break;
                 case ViewFrequencySettings:
                 case ViewModulationSettings:
-                    process_input_settings(app,input);
+                    process_input_settings(app, input);
+                    break;
+                case ViewLast:
+                    furi_crash(TAG " ViewLast selected");
                     break;
                 case ViewDirectSampling:
                     process_input_direct_sampling(app,input);
                     break;
-                case ViewLast: furi_crash(TAG " ViewLast selected"); break;
+                // case ViewLast: furi_crash(TAG " ViewLast selected"); break;
                 }
             }
         } else {
@@ -265,7 +268,7 @@ int32_t protoview_app_entry(void* p) {
     }
 
     /* App no longer running. Shut down and free. */
-    if (app->txrx->txrx_state == TxRxStateRx) {
+    if(app->txrx->txrx_state == TxRxStateRx) {
         FURI_LOG_E(TAG, "Putting CC1101 to sleep before exiting.");
         radio_rx_end(app);
         radio_sleep(app);
